@@ -25,7 +25,6 @@ def main(equation):
     # print(equation)
     empty = re.compile(r'(\s*=\s*)')
     isEmpty = re.match(empty, equation)
-    print(isEmpty)
     if isEmpty:
         exit('Invalid equation')
     parts = equation.split('=')
@@ -38,12 +37,15 @@ def main(equation):
         print("The polynomial degree is strictly greater than 2, I can't solve")
         sys.exit(0)
     power_2_matcher = re.compile(r'(-\s*\d+|\s*\d+.\d+|-\s*\d+.\d+|\s*\d+)\s*\*\s*[Xx]\^2')
+    test = re.compiler(r'[Xx]\^-2')
     power_1_matcher = re.compile(r'(-\s*\d+|\s*\d+.\d+|-\s*\d+.\d+|\s*\d+)\s*\*\s*[Xx]\^1')
     power_1_matcher_1 = re.compile(r'([-+])\s*[Xx]\s*[-+=]')
     power_1_matcher_2 = re.compile(r'()^\s*[Xx]\s*[-+=]')
     power_0_matcher = re.compile(r'(-\s*\d+|\s*\d+.\d+|-\s*\d+.\d+|\s*\d+)\s*\*\s*[Xx]\^0')
     power_0_matcher_1 = re.compile(r'[^\^]\s*(-\s*\d+|\s*\d+.\d+|-\s*\d+.\d+|\s*\d+)\s*[-+=]')
 
+    test1 = re.findall(power_1_matcher_1, parts[0])
+    print("TEST ", test, test1)
     a1 = sum(map(float, map(lambda x: x.replace(' ', ''), re.findall(power_2_matcher, parts[0]))))
     print("a1: {}".format(a1))
     b1 = sum(map(float, map(lambda x: x.replace(' ', ''), re.findall(power_1_matcher, parts[0]))))
@@ -76,8 +78,8 @@ def main(equation):
         if c1 == -c2:
             exit('All real number are solutions')
         exit('No solutions')
-    print('Reduced form: ', reduced(degree, c, b, a))
-    print('Polynomial degree: ', degree)
+    print('Reduced form: {}'.format(reduced(degree, c, b, a)))
+    print('Polynomial degree: {}'.format(degree))
     if degree == 2:
         d = b ** 2 - 4 * a * c
         print('D = {}'.format(d))
@@ -100,4 +102,6 @@ def main(equation):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        exit('usage: python main.py "equation"')
     main(sys.argv[1])
